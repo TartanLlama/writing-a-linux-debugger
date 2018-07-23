@@ -18,7 +18,7 @@ The answer to the first question is, of course, `ptrace`. We've previously used 
 
 The modification we make has to cause the processor to halt and signal the program when the breakpoint address is executed. On x86 this is accomplished by overwriting the instruction at that address with the `int 3` instruction. x86 has an *interrupt vector table* which the operating system can use to register handlers for various events, such as page faults, protection faults, and invalid opcodes. It's kind of like registering error handling callbacks, but right down at the hardware level. When the processor executes the `int 3` instruction, control is passed to the breakpoint interrupt handler, which -- in the case of Linux -- signals the process with a `SIGTRAP`. You can see this process in the diagram below, where we overwrite the first byte of the `mov` instruction with `0xcc`, which is the instruction encoding for `int 3`.
 
-![breakpoint](images/breakpoint.png)
+![breakpoint](/images/breakpoint.png)
 
 The last piece of the puzzle is how the debugger is notified of the break. If you remember back in the previous post, we can use `waitpid` to listen for signals which are sent to the debugee. We can do exactly the same thing here: set the breakpoint, continue the program, call `waitpid` and wait until the `SIGTRAP` occurs. This breakpoint can then be communicated to the user, perhaps by printing the source location which has been reached, or changing the focused line in a GUI debugger.
 

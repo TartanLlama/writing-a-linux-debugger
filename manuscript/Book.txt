@@ -4,6 +4,6 @@ registers-and-memory.md
 elves-and-dwarves.md
 source-and-signals.md
 dwarf-step.md
-unwinding.md
+stack-unwinding.md
 variables.md
 advanced-topics.md
